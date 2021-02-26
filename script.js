@@ -6,30 +6,32 @@ const $audio = document.getElementById('audio'),
     $timer = document.getElementById('timer'),
     $start = document.getElementById('start'),
     $board = document.getElementById('board'),
+    $setting=document.getElementById('setting'),
+    $refresh= document.getElementById('refresh'),
     cards = [
         {
-            answer: 'lion',
-            image: 'https://images.unsplash.com/photo-1573725342230-178c824a10f2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MXwxMjA3fDB8MXxhbGx8fHx8fHx8fA&ixlib=rb-1.2.1&q=80&w=1080'
+            answer: '2C',
+            image: './images/cards/2C.png'
         },
         {
-            answer: 'sheep',
-            image: 'https://www.aces.edu/wp-content/uploads/2018/11/iStock-182344013.jpg'
+            answer: 'QC',
+            image: './images/cards/QC.png'
         },
         {
-            answer: 'owl',
-            image: 'https://cff2.earth.com/uploads/2018/07/02234818/Owls-and-humans-utilize-the-same-visual-processing-strategy.jpg'
+            answer: 'JH',
+            image: './images/cards/JH.png'
         },
         {
-            answer: 'eagle',
-            image: 'https://upload.wikimedia.org/wikipedia/commons/1/19/%C3%81guila_calva.jpg'
+            answer: 'QS',
+            image: './images/cards/QS.png'
         },
         {
-            answer: 'elephant',
-            image: 'https://static.scientificamerican.com/sciam/cache/file/83B0A26D-A020-4041-9F1EC032A8EE391A_source.jpg'
+            answer: '9D',
+            image: './images/cards/9D.png'
         },
         {
-            answer: 'mongoose',
-            image: 'https://1s2oosvtjy52xrh4r10z0zms-wpengine.netdna-ssl.com/wp-content/uploads/2019/01/cute-mongoose.jpg'
+            answer: '7H',
+            image: './images/cards/7H.png'
         }
     ];
 
@@ -60,6 +62,25 @@ const countTime = () => {
 
         if (timer === 0) {
             clearInterval(timerInterval);
+            setTimeout(() => {
+                Swal.fire({
+                     icon: 'error',
+                    title: 'Game Over',       
+                    showConfirmButton: true,
+                    confirmButtonText: 'Play Again'
+                }).then((result) => {
+                     if (result.isConfirmed) {
+                        timer = 120,
+                        steps = 0,
+                        score = 3;
+                        $step.innerText="0";
+                        $score.innerText="3";
+                        $board.innerHTML="";
+                        $timer.innerText="120";
+                    } 
+                })
+                $start.classList.remove('hide');
+            }, 800)
         }
     }, 1000);
 }
@@ -101,12 +122,20 @@ const checkIfGameOver = () => {
                 confirmButtonText: 'Play Again'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    startGame();
+                    timer = 120,
+                        steps = 0,
+                        score = 3;
+                        $step.innerText="0";
+                        $score.innerText="3";
+                        $board.innerHTML="";
+                        $timer.innerText="120";
+                    //startGame();
                 }
             })
             $start.classList.remove('hide');
         }, 800)
     }
+
 }
 
 const checkGameState = () => {
@@ -133,6 +162,7 @@ const printCards = (cardsArray) => {
 }
 
 const startGame = () => {
+ 
     printCards(cards);
     countTime();
 }
